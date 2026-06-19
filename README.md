@@ -1,442 +1,106 @@
-# Product Map: AI Financial Journal
-
-## Vision
-
-> Turn boring credit card statements into a personal financial story that helps users understand, improve, and optimize their spending.
+Here is the README. It is stripped of marketing fluff and reflects the exact, pragmatic MVP we mapped out. It tells developers and users exactly what this is, how it handles their data, and why it was built this way.
 
 ---
 
-# User Journey
+# AI Financial Journal (MVP)
 
-```text
-Sign Up
-   ↓
-Upload Statement PDF
-   ↓
-AI Extracts Transactions
-   ↓
-Categorization Engine
-   ↓
-Financial Journal Generation
-   ↓
-Insights & Recommendations
-   ↓
-Goal Planning
-   ↓
-Monthly Review
+> **Upload your statement. Understand your money. No bullshit.**
+
+Most personal finance apps are either glorified spreadsheets requiring hours of manual entry, or privacy nightmares that want eternal access to your bank accounts.
+
+AI Financial Journal is a lean, strictly scoped extraction engine. You upload a credit card statement, and it instantly shows you your total spend, recurring charges, and anomalies. No "financial storytelling," no unnecessary AI chat features, and no saving your sensitive documents.
+
+## 🚀 Core Philosophy
+
+1. **Privacy by Architecture:** We don't ask for trust; we build a system that doesn't require it. PDFs are decrypted locally in the browser. The unencrypted file is sent to a stateless microservice, processed entirely in RAM, and immediately destroyed.
+2. **Deterministic First:** We don't waste LLM tokens doing basic math or guessing if "ZOMATO" is food. We use a hardcoded merchant dictionary for the top 200 Indian vendors. AI is only used as a fallback for unstructured anomalies.
+3. **Narrow Scope:** For Phase 1, we officially support only **HDFC, ICICI, and SBI** credit card statements. We'd rather be 100% accurate for three banks than 60% accurate for fifty.
+
+## ✨ Features (Phase 1)
+
+* **Client-Side Decryption:** Passwords (often PAN/DOB) never leave the user's device.
+* **Stateless Parsing Engine:** Built with Python (`pdfplumber`) for accurate tabular data extraction.
+* **Instant Dashboard:**
+* **Money Overview:** Total spend, average transaction, largest purchase.
+* **Categorization:** Food, Shopping, Travel, Bills, etc.
+* **Recurring Charges Detected:** Identifies subscriptions (Netflix, Spotify, Prime) billed in the current cycle.
+* **High-Signal Anomalies:** Highlights unusually large purchases or out-of-pattern spending.
+
+
+
+## 🛠 Tech Stack
+
+### Frontend (User Interface & Local Decryption)
+
+* **Framework:** Next.js (TypeScript)
+* **Styling:** Tailwind CSS + Shadcn UI
+* **PDF Handling:** `pdf.js` (Strictly for local password unlocking and decryption before transmission)
+
+### Backend (Stateless Parsing Service)
+
+* **Framework:** FastAPI (Python)
+* **Extraction:** `pdfplumber` / `regex`
+* **Categorization Engine:** Hardcoded JSON/SQL Merchant Dictionary + Fast LLM API fallback (e.g., Gemini Flash) for unrecognized transaction strings.
+* **Architecture:** In-memory processing only. Zero disk writes.
+
+### Database (For Saved Insights)
+
+* **PostgreSQL (Supabase/Neon):** Only stores extracted, anonymized transaction data *if* the user explicitly creates an account and saves it.
+
+## 🔒 The Privacy Contract
+
+If you deploy or fork this project, respect the privacy contract:
+
+1. **No disk writes.** The backend must process the PDF as a buffer in memory.
+2. **Instant deletion.** Once the JSON response is returned to the client, the memory buffer is cleared.
+3. **No logging of transaction strings.** Do not pipe unrecognized strings to a centralized error log.
+
+## 💻 Local Setup
+
+### Prerequisites
+
+* Node.js (v18+)
+* Python (3.10+)
+* Poetry or `pip`
+
+### 1. Start the Parsing Microservice
+
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
+
 ```
 
----
+### 2. Start the Frontend
 
-# MVP Architecture
+```bash
+cd frontend
+npm install
+npm run dev
 
-```text
-Frontend (Next.js)
-        │
-        ▼
-PDF Upload Service
-        │
-        ▼
-Statement Parser
-        │
-        ▼
-Transaction Database
-        │
-        ├── Categories
-        │
-        ├── Journal Engine
-        │
-        ├── Analytics Engine
-        │
-        └── AI Insights Engine
-        │
-        ▼
-Dashboard
 ```
 
----
+Create a `.env.local` file in the frontend directory:
 
-# Core Modules
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000
 
-## 1. Authentication
-
-### Features
-
-* Email Login
-* Google Login
-
-### Data
-
-```text
-User
- ├─ Name
- ├─ Email
- ├─ Created At
- └─ Settings
 ```
 
----
+## 🗺 Roadmap
 
-## 2. Statement Upload
+**Phase 1 (Current):** Prove the value. Single-statement PDF uploads, local decryption, and immediate insights for HDFC, ICICI, and SBI.
+**Phase 2:** Account Aggregator (AA) Integration. Move from manual PDF uploads to frictionless, consent-based API syncing via India's AA ecosystem (e.g., Sahamati framework).
+**Phase 3:** Multi-card intelligence and historical MoM (Month-over-Month) trend analysis.
 
-### Inputs
+## 🤝 Contributing
 
-* PDF Statement
-* CSV Statement (future)
+We are currently only accepting PRs for:
 
-### Outputs
+* Updating the `merchant_dictionary.json`
+* Hardening the regex rules for HDFC, ICICI, and SBI parsers.
 
-```text
-Transaction
- ├─ Date
- ├─ Merchant
- ├─ Amount
- ├─ Card
- ├─ Category
- └─ Metadata
-```
-
----
-
-## 3. Transaction Categorization
-
-### Categories
-
-```text
-Food
-Travel
-Shopping
-Bills
-Education
-Healthcare
-Entertainment
-Subscriptions
-Investments
-Others
-```
-
-### Example
-
-```text
-Swiggy
-→ Food
-
-Amazon
-→ Shopping
-
-Uber
-→ Travel
-```
-
----
-
-## 4. Journal Engine ⭐
-
-### Main Differentiator
-
-Converts transactions into a story.
-
-Example:
-
-```text
-June 5
-
-Amazon
-₹1999
-
-AI Note:
-Largest purchase this week.
-```
-
----
-
-### Weekly Summary
-
-```text
-Week 2
-
-Spent ₹4,200
-
-Top Category:
-Food
-
-Most Frequent Merchant:
-Swiggy
-```
-
----
-
-### Monthly Story
-
-```text
-June 2026
-
-Spent ₹28,400
-
-+22% from May
-
-Food:
-₹8,200
-
-Shopping:
-₹5,600
-
-Transport:
-₹2,100
-```
-
----
-
-## 5. Analytics Dashboard
-
-### Widgets
-
-#### Spending Breakdown
-
-```text
-Food       30%
-Shopping   25%
-Travel     15%
-Bills      10%
-Others     20%
-```
-
----
-
-### Monthly Trends
-
-```text
-Jan ████
-
-Feb ██████
-
-Mar █████
-
-Apr ███████
-```
-
----
-
-### Merchant Analysis
-
-```text
-Amazon
-₹15,000
-
-8 Purchases
-
-Average:
-₹1,875
-```
-
----
-
-## 6. AI Recommendation Engine
-
-### Recommendation Types
-
-#### Overspending
-
-```text
-Food delivery increased 43%.
-
-Potential savings:
-₹2,100/month
-```
-
----
-
-#### Subscription Detection
-
-```text
-Spotify
-ChatGPT
-Netflix
-
-Total:
-₹1,450/month
-```
-
----
-
-#### Anomaly Detection
-
-```text
-₹9,500 spent at Merchant X.
-
-This is 6× your average transaction.
-```
-
----
-
-#### Cashback Optimization
-
-```text
-You use Card A for Amazon.
-
-Card B would have earned
-₹430 extra cashback.
-```
-
-(Massive feature for credit-card enthusiasts.)
-
----
-
-## 7. Goal Planning
-
-### User Creates Goal
-
-```text
-New Laptop
-
-Target:
-₹100,000
-
-Deadline:
-March 2027
-```
-
----
-
-### AI Projection
-
-```text
-Current savings rate:
-₹4,500/month
-
-Goal achieved in:
-22 months
-
-Reduce food spending by 15%
-→ Goal achieved in 18 months
-```
-
----
-
-# Future Features
-
-## V2
-
-### Multi-Card Dashboard
-
-```text
-HDFC Millennia
-Axis Ace
-ICICI Amazon
-Amex MRCC
-```
-
-Unified spending view.
-
----
-
-### Spending Heatmap
-
-GitHub-style spending calendar.
-
-```text
-🟩🟩⬜🟩
-🟨🟩🟩🟥
-⬜🟩🟨🟩
-```
-
----
-
-### Monthly Report PDF
-
-```text
-Financial Review
-June 2026
-```
-
-Export and share.
-
----
-
-## V3
-
-### Account Aggregator Integration
-
-Auto-fetch transactions.
-
-No manual uploads.
-
----
-
-### AI Chat
-
-```text
-Why was my spending higher this month?
-
-↓
-
-Shopping increased by 31%.
-Amazon purchases contributed
-₹3,200 of the increase.
-```
-
----
-
-# Database Design
-
-```text
-Users
-│
-├── Statements
-│
-├── Transactions
-│
-├── Categories
-│
-├── Goals
-│
-├── Recommendations
-│
-└── Reports
-```
-
----
-
-# Launch Roadmap
-
-### Phase 1 (4 Weeks)
-
-✅ Login
-
-✅ PDF Upload
-
-✅ Transaction Parsing
-
-✅ Categorization
-
-✅ Journal Timeline
-
-✅ Monthly AI Summary
-
----
-
-### Phase 2
-
-✅ Goal Planning
-
-✅ Subscription Detection
-
-✅ Spending Heatmap
-
-✅ Merchant Insights
-
----
-
-### Phase 3
-
-✅ Cashback Optimization
-
-✅ Account Aggregator
-
-✅ AI Chat Assistant
-
----
-
-# One-Sentence Pitch
-
-> **AI Financial Journal transforms credit card statements into a personalized financial story, helping users understand spending habits, optimize rewards, and make better money decisions.**
+Do not submit PRs for new bank support unless you can guarantee 99% extraction accuracy across at least 5 different statement variations for that bank.
