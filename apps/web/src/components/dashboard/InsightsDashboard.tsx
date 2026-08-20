@@ -18,6 +18,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { formatDate, formatINR } from '@/lib/formatters';
 import { saveStatementSnapshot } from '@/lib/feedback-tracker';
+import { saveStatementSessionApi } from '@/lib/api';
 import {
   CreditCard,
   Calendar,
@@ -30,7 +31,12 @@ import {
   FileSpreadsheet,
   Layers,
   History,
+  Bookmark,
+  CheckCircle,
+  Loader2,
+  AlertCircle,
 } from 'lucide-react';
+
 
 export interface InsightsDashboardProps {
   data: ParseStatementResponse;
@@ -54,10 +60,27 @@ export const InsightsDashboard: React.FC<InsightsDashboardProps> = ({
   const [filterCategory, setFilterCategory] = useState<Category | 'ALL'>('ALL');
   const [filterMerchants, setFilterMerchants] = useState<string[] | undefined>(undefined);
 
+  // Persistence state
+  const [saveStatus, setSaveStatus] = useState<'IDLE' | 'SAVING' | 'SAVED' | 'ERROR'>('IDLE');
+
   // Save statement snapshot on initial load for historical comparison
   useEffect(() => {
     saveStatementSnapshot(data);
   }, [data]);
+
+  const handleSaveSession = async () => {
+    try {
+      setSaveStatus('SAVING');
+      await saveStatementSessionApi(data);
+      setSaveStatus('SAVED');
+      setTimeout(() => setSaveStatus('IDLE'), 4000);
+    } catch (err) {
+      console.warn('Failed to persist statement session', err);
+      setSaveStatus('ERROR');
+      setTimeout(() => setSaveStatus('IDLE'), 4000);
+    }
+  };
+
 
   const {
     header,
@@ -122,6 +145,42 @@ export const InsightsDashboard: React.FC<InsightsDashboardProps> = ({
           {/* Action Buttons */}
           <div className="flex items-center gap-3 flex-wrap">
             <Button
+              variant={saveStatus === 'SAVED' ? 'primary' : 'outline'}
+              size="sm"
+              onClick={handleSaveSession}
+              disabled={saveStatus === 'SAVING'}
+              className={`gap-1.5 text-xs font-mono transition-all ${
+                saveStatus === 'SAVED'
+                  ? 'bg-bauhaus-green text-white border-black hover:bg-emerald-700'
+                  : saveStatus === 'ERROR'
+                  ? 'bg-bauhaus-red text-white border-black hover:bg-red-700'
+                  : 'bg-canvas hover:bg-muted'
+              }`}
+            >
+              {saveStatus === 'SAVING' ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Saving...</span>
+                </>
+              ) : saveStatus === 'SAVED' ? (
+                <>
+                  <CheckCircle className="w-4 h-4" />
+                  <span>Saved to Vault</span>
+                </>
+              ) : saveStatus === 'ERROR' ? (
+                <>
+                  <AlertCircle className="w-4 h-4" />
+                  <span>Retry Save</span>
+                </>
+              ) : (
+                <>
+                  <Bookmark className="w-4 h-4" />
+                  <span>Save Session</span>
+                </>
+              )}
+            </Button>
+
+            <Button
               variant="outline"
               size="sm"
               onClick={handlePrint}
@@ -143,6 +202,7 @@ export const InsightsDashboard: React.FC<InsightsDashboardProps> = ({
               </Button>
             )}
           </div>
+
         </div>
 
         {/* Statement Timeline & Limit Details */}

@@ -52,6 +52,10 @@ from app.schemas.statement import (
 from app.schemas.statements_api import (
     ParseStatementResponse,
     RecommendationsGenerateRequest,
+    StatementHistoryItem,
+    StatementHistoryResponse,
+    StatementSaveRequest,
+    StatementSaveResponse,
     StatementValidateRequest,
     StatementValidateResponse,
 )
@@ -100,5 +104,10 @@ __all__ = [
     "StatementValidateRequest",
     "StatementValidateResponse",
     "RecommendationsGenerateRequest",
+    "StatementSaveRequest",
+    "StatementSaveResponse",
+    "StatementHistoryItem",
+    "StatementHistoryResponse",
 ]
+
 

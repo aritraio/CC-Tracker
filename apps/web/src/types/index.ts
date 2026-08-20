@@ -408,3 +408,46 @@ export interface MoMComparisonResult {
   is_simulated_baseline?: boolean;
 }
 
+export interface StatementSaveRequest {
+  statement_data: ParseStatementResponse;
+  user_id?: string | null;
+  card_name?: string | null;
+  save_transactions?: boolean;
+  save_findings?: boolean;
+  save_recommendations?: boolean;
+}
+
+export interface StatementSaveResponse {
+  success: boolean;
+  statement_id: string;
+  card_id?: string | null;
+  saved_transactions_count: number;
+  saved_findings_count: number;
+  saved_recommendations_count: number;
+  saved_at: string;
+  message: string;
+}
+
+export interface StatementHistoryItem {
+  id: string;
+  issuer: string;
+  card_last_4?: string | null;
+  card_name?: string | null;
+  period_start?: string | null;
+  period_end?: string | null;
+  due_date?: string | null;
+  total_amount_due: string;
+  total_debits: string;
+  reconciliation_status: string;
+  transaction_count: number;
+  findings_count: number;
+  recommendations_count: number;
+  created_at: string;
+}
+
+export interface StatementHistoryResponse {
+  statements: StatementHistoryItem[];
+  total_count: number;
+}
+
+

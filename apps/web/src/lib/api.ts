@@ -2,7 +2,11 @@ import {
   ParseStatementResponse,
   RecommendationFeedbackRequest,
   RecommendationFeedbackResponse,
+  StatementHistoryResponse,
+  StatementSaveRequest,
+  StatementSaveResponse,
 } from '@/types';
+
 
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
@@ -121,4 +125,63 @@ export async function recordRecommendationFeedbackApi(
     }
   );
 }
+
+/**
+ * Persist the current parsed statement session to storage vault.
+ */
+export async function saveStatementSessionApi(
+  statementData: ParseStatementResponse,
+  options?: {
+    userId?: string;
+    cardName?: string;
+  }
+): Promise<StatementSaveResponse> {
+  const payload: StatementSaveRequest = {
+    statement_data: statementData,
+    user_id: options?.userId,
+    card_name: options?.cardName,
+    save_transactions: true,
+    save_findings: true,
+    save_recommendations: true,
+  };
+
+  return fetchFromApi<StatementSaveResponse>('/api/v1/statements/save', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+/**
+ * Fetch list of historical saved statements.
+ */
+export async function getStatementHistoryApi(
+  userId?: string,
+  limit: number = 50
+): Promise<StatementHistoryResponse> {
+  const params = new URLSearchParams();
+  if (userId) params.append('user_id', userId);
+  if (limit) params.append('limit', String(limit));
+
+  const query = params.toString();
+  return fetchFromApi<StatementHistoryResponse>(
+    `/api/v1/statements/history${query ? `?${query}` : ''}`
+  );
+}
+
+/**
+ * Fetch a complete parsed statement by ID.
+ */
+export async function getStatementByIdApi(
+  statementId: string,
+  userId?: string
+): Promise<ParseStatementResponse> {
+  const params = new URLSearchParams();
+  if (userId) params.append('user_id', userId);
+
+  const query = params.toString();
+  return fetchFromApi<ParseStatementResponse>(
+    `/api/v1/statements/${encodeURIComponent(statementId)}${query ? `?${query}` : ''}`
+  );
+}
+
 

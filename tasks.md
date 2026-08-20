@@ -18,9 +18,9 @@
 - [x] **Phase 9: Next.js Frontend — Insights Dashboard & Visualizations**
 - [x] **Phase 10: Next.js Frontend — Transaction Manager & Filter Controls**
 - [x] **Phase 11: Behavioral Feedback Loop & Recommendation Tracking**
-- [ ] **Phase 12: Persistence Layer (Supabase / PostgreSQL Integration)**
-
+- [x] **Phase 12: Persistence Layer (Supabase / PostgreSQL Integration)**
 - [ ] **Phase 13: End-to-End Testing, Polish, Benchmarking & Deployment**
+
 
 ---
 
@@ -316,13 +316,14 @@
 ## Phase 12: Persistence Layer (Supabase / PostgreSQL Integration)
 
 ### Task 12.1: Supabase Database Migration & Schema
-- [ ] Create SQL migration script in `apps/api/app/models/schema.sql` matching PRD Section 5
-- [ ] Apply Row Level Security (RLS) policies on `statements`, `transactions`, `findings`, and `recommendations`
+- [x] Create SQL migration script in `apps/api/app/models/schema.sql` matching PRD Section 5
+- [x] Apply Row Level Security (RLS) policies on `statements`, `transactions`, `findings`, and `recommendations`
 
 ### Task 12.2: Save & History Endpoints
-- [ ] Implement `POST /api/v1/statements/save` to persist current session to Supabase
-- [ ] Implement `GET /api/v1/statements/history` to load past statements for authenticated users
-- [ ] Add optional "Save Session" button in dashboard header
+- [x] Implement `POST /api/v1/statements/save` to persist current session to Supabase
+- [x] Implement `GET /api/v1/statements/history` to load past statements for authenticated users
+- [x] Add optional "Save Session" button in dashboard header
+
 
 ---
 

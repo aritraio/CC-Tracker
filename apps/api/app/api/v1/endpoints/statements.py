@@ -12,11 +12,16 @@ from app.recommendations.engine import get_default_recommendation_engine
 from app.recommendations.llm_explainer import get_default_llm_explainer
 from app.schemas.statements_api import (
     ParseStatementResponse,
+    StatementHistoryResponse,
+    StatementSaveRequest,
+    StatementSaveResponse,
     StatementValidateRequest,
     StatementValidateResponse,
 )
 from app.services.reconciliation import reconcile_statement
+from app.services.storage_service import get_default_storage_service
 from app.services.validator import validate_transactions
+
 
 logger = logging.getLogger(__name__)
 
@@ -160,3 +165,54 @@ async def validate_statement_endpoint(
         reconciliation=reconciliation_summary,
         validation=validation_result,
     )
+
+
+@router.post(
+    "/save",
+    response_model=StatementSaveResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Persist parsed statement session to storage vault",
+    description="Saves statement header, transactions, findings, and recommendations for long-term tracking and historical baseline profiling.",
+)
+async def save_statement_endpoint(
+    payload: StatementSaveRequest,
+) -> StatementSaveResponse:
+    storage = get_default_storage_service()
+    return storage.save_statement_session(payload)
+
+
+@router.get(
+    "/history",
+    response_model=StatementHistoryResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Retrieve statement history summaries",
+    description="Lists past saved statement periods, spend totals, reconciliation statuses, and card identifiers.",
+)
+async def get_statement_history_endpoint(
+    user_id: str | None = None,
+    limit: int = 50,
+) -> StatementHistoryResponse:
+    storage = get_default_storage_service()
+    return storage.get_statement_history(user_id=user_id, limit=limit)
+
+
+@router.get(
+    "/{statement_id}",
+    response_model=ParseStatementResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Retrieve complete parsed statement details by ID",
+    description="Loads the complete parsed statement dataset including full transactions, analytics, and findings.",
+)
+async def get_statement_by_id_endpoint(
+    statement_id: str,
+    user_id: str | None = None,
+) -> ParseStatementResponse:
+    storage = get_default_storage_service()
+    statement = storage.get_statement_by_id(statement_id=statement_id, user_id=user_id)
+    if not statement:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Statement with ID '{statement_id}' not found.",
+        )
+    return statement
+
