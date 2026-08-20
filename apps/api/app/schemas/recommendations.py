@@ -98,3 +98,43 @@ class LLMExplanationResult(BaseModel):
     coaching_tone_note: str
     generated_by: str = Field("gemini-1.5-flash", description="Model name or 'deterministic_template'")
     is_fallback: bool = False
+
+
+class RecommendationEventType(StrEnum):
+    VIEWED = "VIEWED"
+    EXPLORED_TRANSACTIONS = "EXPLORED_TRANSACTIONS"
+    ACCEPTED = "ACCEPTED"
+    DISMISSED = "DISMISSED"
+    COMPLETED = "COMPLETED"
+    UNDONE = "UNDONE"
+
+
+class DismissReason(StrEnum):
+    ALREADY_PLANNED = "ALREADY_PLANNED"
+    NOT_APPLICABLE = "NOT_APPLICABLE"
+    TOO_RESTRICTIVE = "TOO_RESTRICTIVE"
+    CANNOT_REDUCE = "CANNOT_REDUCE"
+    OTHER = "OTHER"
+
+
+class RecommendationFeedbackRequest(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    event_type: RecommendationEventType
+    dismiss_reason: DismissReason | None = None
+    feedback_notes: str | None = Field(None, max_length=500)
+    estimated_monthly_savings: Decimal | None = None
+    target_category: Category | None = None
+    metadata: dict[str, Any] = Field(default_factory=dict)
+
+
+class RecommendationFeedbackResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    success: bool = True
+    recommendation_id: str
+    current_status: RecommendationStatus
+    recorded_event_id: str
+    timestamp: str
+    message: str
+

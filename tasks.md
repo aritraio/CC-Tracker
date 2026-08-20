@@ -14,11 +14,12 @@
 - [x] **Phase 5: Pattern & Anomaly Detectors (10 Detectors)**
 - [x] **Phase 6: Recommendation Engine & LLM Explanation Layer**
 - [x] **Phase 7: FastAPI REST Backend Implementation & Testing**
-- [ ] **Phase 8: Next.js Frontend — Client Decryption & Upload Experience**
-- [ ] **Phase 9: Next.js Frontend — Insights Dashboard & Visualizations**
-- [ ] **Phase 10: Next.js Frontend — Transaction Manager & Filter Controls**
-- [ ] **Phase 11: Behavioral Feedback Loop & Recommendation Tracking**
+- [x] **Phase 8: Next.js Frontend — Client Decryption & Upload Experience**
+- [x] **Phase 9: Next.js Frontend — Insights Dashboard & Visualizations**
+- [x] **Phase 10: Next.js Frontend — Transaction Manager & Filter Controls**
+- [x] **Phase 11: Behavioral Feedback Loop & Recommendation Tracking**
 - [ ] **Phase 12: Persistence Layer (Supabase / PostgreSQL Integration)**
+
 - [ ] **Phase 13: End-to-End Testing, Polish, Benchmarking & Deployment**
 
 ---
@@ -247,17 +248,17 @@
 ## Phase 8: Next.js Frontend — Client Decryption & Upload Experience
 
 ### Task 8.1: Client-Side PDF Decryption Utility
-- [ ] Create `apps/web/src/lib/pdf-unlocker.ts` using `pdfjs-dist`
-- [ ] Detect if PDF is password-protected
-- [ ] Unlock PDF in browser memory with user-provided password
-- [ ] Export unlocked `ArrayBuffer` for backend transmission (raw password never leaves browser)
+- [x] Create `apps/web/src/lib/pdf-unlocker.ts` using `pdfjs-dist`
+- [x] Detect if PDF is password-protected
+- [x] Unlock PDF in browser memory with user-provided password
+- [x] Export unlocked `ArrayBuffer` for backend transmission (raw password never leaves browser)
 
 ### Task 8.2: Dropzone & Upload State Machine
-- [ ] Create `apps/web/src/components/upload/DropZone.tsx` with drag-and-drop support
-- [ ] Create `apps/web/src/components/upload/PasswordModal.tsx` with bank-specific password hints
-- [ ] Create `apps/web/src/components/upload/ProcessingProgress.tsx` with stepped animation:
+- [x] Create `apps/web/src/components/upload/DropZone.tsx` with drag-and-drop support
+- [x] Create `apps/web/src/components/upload/PasswordModal.tsx` with bank-specific password hints
+- [x] Create `apps/web/src/components/upload/ProcessingProgress.tsx` with stepped animation:
   - *Decrypting $\rightarrow$ Extracting Tables $\rightarrow$ Categorizing $\rightarrow$ Reconciling $\rightarrow$ Finalizing*
-- [ ] Create `apps/web/src/app/page.tsx` integrating upload flow
+- [x] Create `apps/web/src/app/page.tsx` integrating upload flow
 - **Verification:** Uploading encrypted HDFC statement prompts for password, unlocks client-side, and initiates parse.
 
 ---
@@ -265,49 +266,50 @@
 ## Phase 9: Next.js Frontend — Insights Dashboard & Visualizations
 
 ### Task 9.1: Executive Summary & Reconciliation Banner
-- [ ] Create `apps/web/src/components/dashboard/OverviewCards.tsx` (Total spend, Net spend, Avg txn, Max purchase)
-- [ ] Create `apps/web/src/components/dashboard/ReconciliationBadge.tsx` (Shows `Reconciled` or `Review Required` with delta)
-- [ ] Create `apps/web/src/components/dashboard/KeyFindingsList.tsx` (Top 5 discoveries with severity icons)
+- [x] Create `apps/web/src/components/dashboard/OverviewCards.tsx` (Total spend, Net spend, Avg txn, Max purchase)
+- [x] Create `apps/web/src/components/dashboard/ReconciliationBadge.tsx` (Shows `Reconciled` or `Review Required` with delta)
+- [x] Create `apps/web/src/components/dashboard/KeyFindingsList.tsx` (Top 5 discoveries with severity icons)
 
 ### Task 9.2: Financial Charts with Recharts
-- [ ] Create `apps/web/src/components/dashboard/CategoryDonutChart.tsx` (Interactive category distribution)
-- [ ] Create `apps/web/src/components/dashboard/SpendingTimelineChart.tsx` (Daily spend line/area chart)
-- [ ] Create `apps/web/src/components/dashboard/TopMerchantsBarChart.tsx` (Top 10 merchant horizontal bar chart)
-- [ ] Ensure all charts support dark mode, responsive resizing, and custom tooltips with INR formatting (`₹`)
+- [x] Create `apps/web/src/components/dashboard/CategoryDonutChart.tsx` (Interactive category distribution)
+- [x] Create `apps/web/src/components/dashboard/SpendingTimelineChart.tsx` (Daily spend line/area chart)
+- [x] Create `apps/web/src/components/dashboard/TopMerchantsBarChart.tsx` (Top 10 merchant horizontal bar chart)
+- [x] Ensure all charts support dark mode, responsive resizing, and custom tooltips with INR formatting (`₹`)
 
 ### Task 9.3: Actionable Recommendations Carousel
-- [ ] Create `apps/web/src/components/insights/RecommendationCard.tsx`
-- [ ] Display title, reason, evidence stats, estimated monthly savings badge, and action CTA
-- [ ] Add "Show Transactions" button linking directly to filtered transaction table
+- [x] Create `apps/web/src/components/insights/RecommendationCard.tsx`
+- [x] Display title, reason, evidence stats, estimated monthly savings badge, and action CTA
+- [x] Add "Show Transactions" button linking directly to filtered transaction table
 
 ---
 
 ## Phase 10: Next.js Frontend — Transaction Manager & Filter Controls
 
 ### Task 10.1: Interactive Transaction Table
-- [ ] Create `apps/web/src/components/table/TransactionTable.tsx`
-- [ ] Columns: Date, Merchant, Type Badge, Category, Amount (INR), Confidence / Action
-- [ ] Implement search bar (filters by merchant name or description in real-time)
-- [ ] Implement category and transaction type dropdown filters
-- [ ] Implement sorting by Date (asc/desc) and Amount (high/low)
+- [x] Create `apps/web/src/components/table/TransactionTable.tsx`
+- [x] Columns: Date, Merchant, Type Badge, Category, Amount (INR), Confidence / Action
+- [x] Implement search bar (filters by merchant name or description in real-time)
+- [x] Implement category and transaction type dropdown filters
+- [x] Implement sorting by Date (asc/desc) and Amount (high/low)
 
 ### Task 10.2: Inline Category & Merchant Correction
-- [ ] Allow user to click category badge to reclassify transaction
-- [ ] Dynamically recalculate category totals and charts in frontend state upon manual reclassification
-- **Verification:** Table handles 300+ transactions with smooth 60fps scrolling and instant filtering.
+- [x] Allow user to click category badge to reclassify transaction
+- [x] Dynamically recalculate category totals and charts in frontend state upon manual reclassification
+- [x] Add CSV export and filter preset chips (Micro-spend, High-ticket, Subscriptions, Credits)
 
 ---
 
 ## Phase 11: Behavioral Feedback Loop & Recommendation Tracking
 
 ### Task 11.1: Recommendation Action Controls
-- [ ] Add `Accept`, `Dismiss`, and `Explore` buttons to `RecommendationCard.tsx`
-- [ ] Store recommendation interaction events in client state / local storage
-- [ ] Provide dismiss reason modal ("Already planned", "Not applicable", "Too restrictive")
+- [x] Add `Accept`, `Dismiss`, and `Explore` buttons to `RecommendationCard.tsx`
+- [x] Store recommendation interaction events in client state / local storage
+- [x] Provide dismiss reason modal ("Already planned", "Not applicable", "Too restrictive")
 
 ### Task 11.2: Month-over-Month Outcome Verification (Stage 3 Preview)
-- [ ] Create `apps/web/src/components/dashboard/MoMComparisonCard.tsx`
-- [ ] When a subsequent statement is loaded, show verified savings comparison against prior recommendations
+- [x] Create `apps/web/src/components/dashboard/MoMComparisonCard.tsx`
+- [x] When a subsequent statement is loaded, show verified savings comparison against prior recommendations
+
 
 ---
 

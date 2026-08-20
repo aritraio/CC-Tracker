@@ -25,10 +25,14 @@ from app.schemas.categorization import (
 from app.schemas.health import HealthResponse
 from app.schemas.recommendations import (
     ActionStep,
+    DismissReason,
     FindingHighlight,
     LLMExplanationResult,
     Recommendation,
     RecommendationEvidence,
+    RecommendationEventType,
+    RecommendationFeedbackRequest,
+    RecommendationFeedbackResponse,
     RecommendationResult,
     RecommendationStatus,
     RecommendationType,
@@ -88,8 +92,13 @@ __all__ = [
     "ActionStep",
     "FindingHighlight",
     "LLMExplanationResult",
+    "RecommendationEventType",
+    "DismissReason",
+    "RecommendationFeedbackRequest",
+    "RecommendationFeedbackResponse",
     "ParseStatementResponse",
     "StatementValidateRequest",
     "StatementValidateResponse",
     "RecommendationsGenerateRequest",
 ]
+

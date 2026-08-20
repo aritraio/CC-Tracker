@@ -4,13 +4,16 @@ import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { getBackendHealth, HealthStatus } from '@/lib/api';
+import { DropZone } from '@/components/upload/DropZone';
+import { InsightsDashboard } from '@/components/dashboard/InsightsDashboard';
+import { SAMPLE_STATEMENT_DATA } from '@/lib/sample-data';
+import { ParseStatementResponse } from '@/types';
 import {
   ShieldCheck,
   FileSpreadsheet,
@@ -19,13 +22,17 @@ import {
   ArrowRight,
   Upload,
   Lock,
+  RotateCcw,
+  Play,
+  Eye,
   CheckCircle2,
-  AlertTriangle,
+  TrendingDown,
 } from 'lucide-react';
 
 export default function HomePage() {
   const [health, setHealth] = useState<HealthStatus | null>(null);
   const [loadingHealth, setLoadingHealth] = useState(true);
+  const [parsedStatement, setParsedStatement] = useState<ParseStatementResponse | null>(null);
 
   useEffect(() => {
     getBackendHealth()
@@ -33,6 +40,28 @@ export default function HomePage() {
       .catch(() => setHealth(null))
       .finally(() => setLoadingHealth(false));
   }, []);
+
+  const handleStatementParsed = (data: ParseStatementResponse) => {
+    setParsedStatement(data);
+    setTimeout(() => {
+      const summaryEl = document.getElementById('dashboard-view');
+      summaryEl?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
+
+  const handleLoadDemo = () => {
+    setParsedStatement(SAMPLE_STATEMENT_DATA);
+    setTimeout(() => {
+      const summaryEl = document.getElementById('dashboard-view');
+      summaryEl?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
+
+  const handleReset = () => {
+    setParsedStatement(null);
+    const dropzone = document.getElementById('dropzone');
+    dropzone?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <div className="flex flex-col">
@@ -42,9 +71,9 @@ export default function HomePage() {
           {/* Left Hero Column (7 Cols) */}
           <div className="lg:col-span-7 p-6 sm:p-10 md:p-14 lg:p-16 flex flex-col justify-between border-b-4 lg:border-b-0 lg:border-r-4 border-black bg-paper">
             <div>
-              <div className="inline-flex items-center gap-2 mb-6">
+              <div className="inline-flex items-center gap-2 mb-6 flex-wrap">
                 <Badge variant="yellow" className="text-xs">
-                  STAGE 1: MVP IN DEVELOPMENT
+                  STAGE 1: MVP OPERATIONAL
                 </Badge>
                 <Badge variant="outline" className="text-xs">
                   HDFC • ICICI • SBI • AXIS • AMEX
@@ -79,6 +108,16 @@ export default function HomePage() {
               </Button>
 
               <Button
+                variant="yellow"
+                size="lg"
+                className="gap-2"
+                onClick={handleLoadDemo}
+              >
+                <Eye className="w-5 h-5" />
+                <span>Explore Demo Report</span>
+              </Button>
+
+              <Button
                 variant="outline"
                 size="lg"
                 className="gap-2"
@@ -86,7 +125,7 @@ export default function HomePage() {
                   window.open('http://localhost:8000/api/v1/docs', '_blank');
                 }}
               >
-                <span>Explore API</span>
+                <span>API Docs</span>
                 <ArrowRight className="w-4 h-4" />
               </Button>
             </div>
@@ -187,7 +226,7 @@ export default function HomePage() {
           </div>
 
           <div className="px-4 py-2">
-            <div className="text-4xl font-black font-mono tracking-tight">&lt; 1.5s</div>
+            <div className="text-4xl font-black font-mono tracking-tight">&lt; 0.5s</div>
             <div className="text-xs font-bold uppercase tracking-widest mt-1">
               In-Memory Vectorized Parsing
             </div>
@@ -211,44 +250,64 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Constructivist Dropzone Box */}
-          <div className="bg-white border-4 border-dashed border-black shadow-bauhaus-lg p-8 sm:p-16 text-center relative transition-all hover:bg-bauhaus-yellow/10 bg-bauhaus-dots">
-            <div className="w-16 h-16 rounded-full bg-bauhaus-red border-4 border-black mx-auto mb-6 flex items-center justify-center shadow-bauhaus-sm">
-              <Upload className="w-8 h-8 text-white" />
-            </div>
+          {/* Interactive Bauhaus DropZone Component */}
+          <DropZone onStatementParsed={handleStatementParsed} />
 
-            <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight mb-2">
-              DRAG & DROP STATEMENT PDF HERE
-            </h3>
-            <p className="text-sm font-medium text-ink/70 mb-6">
-              Supports HDFC, ICICI, SBI, Axis, and Amex (Up to 15MB)
-            </p>
-
-            <div className="flex justify-center gap-4">
-              <Button variant="primary" size="md">
-                SELECT PDF FILE
-              </Button>
-            </div>
-
-            <div className="mt-8 pt-6 border-t-2 border-black flex flex-wrap items-center justify-center gap-6 text-xs font-mono font-bold text-ink/70">
-              <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-bauhaus-green" />
-                Zero Disk Persistence
-              </span>
-              <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-bauhaus-blue" />
-                SHA-256 Deduplication
-              </span>
-              <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-bauhaus-red" />
-                Line-Item Reconciliation
-              </span>
-            </div>
+          {/* Quick Demo Trigger */}
+          <div className="mt-8 text-center">
+            <span className="text-xs font-bold uppercase tracking-wider text-ink/60 mr-2">
+              Don&apos;t have a statement handy?
+            </span>
+            <button
+              onClick={handleLoadDemo}
+              className="text-xs font-black uppercase tracking-widest text-bauhaus-blue underline hover:text-bauhaus-blue-hover"
+            >
+              Load Sample Reconciled Statement (₹45,230 HDFC)
+            </button>
           </div>
         </div>
       </section>
 
-      {/* 4. ARCHITECTURAL PILLARS */}
+      {/* 4. MASTER INSIGHTS DASHBOARD (Shown when statement is parsed or demo is loaded) */}
+      {parsedStatement && (
+        <section
+          id="dashboard-view"
+          className="py-12 md:py-16 px-4 sm:px-6 lg:px-8 bg-canvas border-y-4 border-black"
+        >
+          <div className="max-w-7xl mx-auto">
+            <div className="mb-8 flex items-center justify-between">
+              <div>
+                <Badge variant="yellow" className="mb-2">
+                  FINANCIAL INTELLIGENCE ENGINE
+                </Badge>
+                <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-ink">
+                  STATEMENT INSIGHTS & AUDIT DASHBOARD
+                </h2>
+              </div>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleReset}
+                className="hidden sm:flex gap-1.5"
+              >
+                <RotateCcw className="w-4 h-4" />
+                <span>Upload New Statement</span>
+              </Button>
+            </div>
+
+            <InsightsDashboard
+              data={parsedStatement}
+              onReset={handleReset}
+              onShowTransactions={(category, merchants) => {
+                console.log('Filter transactions for:', category, merchants);
+              }}
+            />
+          </div>
+        </section>
+      )}
+
+      {/* 5. ARCHITECTURAL PILLARS */}
       <section id="features" className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-paper border-t-4 border-black">
         <div className="max-w-7xl mx-auto">
           <div className="mb-12">
@@ -270,7 +329,7 @@ export default function HomePage() {
                 <CardTitle>Mandatory Reconciliation</CardTitle>
                 <CardDescription>
                   Extracted line-item totals are strictly verified against the
-                  statement's printed summary dues. Any discrepancy ($\gt ₹1.00$) flags
+                  statement&apos;s printed summary dues. Any discrepancy (&gt; ₹1.00) flags
                   `REVIEW_REQUIRED`.
                 </CardDescription>
               </CardHeader>

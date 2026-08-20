@@ -1,3 +1,10 @@
+import {
+  ParseStatementResponse,
+  RecommendationFeedbackRequest,
+  RecommendationFeedbackResponse,
+} from '@/types';
+
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export interface HealthStatus {
@@ -29,7 +36,7 @@ export class ApiError extends Error {
 }
 
 /**
- * Perform a typed GET request to the CC Track API.
+ * Perform a typed GET/POST request with JSON body to the CC Track API.
  */
 export async function fetchFromApi<T>(
   endpoint: string,
@@ -66,3 +73,52 @@ export async function fetchFromApi<T>(
 export async function getBackendHealth(): Promise<HealthStatus> {
   return fetchFromApi<HealthStatus>('/health');
 }
+
+/**
+ * Upload and parse a credit card statement PDF stream.
+ */
+export async function parseStatementPdf(
+  file: File | Blob,
+  filename: string = 'statement.pdf'
+): Promise<ParseStatementResponse> {
+  const url = `${API_BASE_URL}/api/v1/statements/parse`;
+  const formData = new FormData();
+  formData.append('file', file, filename);
+
+  const response = await fetch(url, {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!response.ok) {
+    let errorData: ApiErrorDetails;
+    try {
+      errorData = await response.json();
+    } catch {
+      errorData = {
+        error_code: 'PARSING_HTTP_ERROR',
+        message: `HTTP ${response.status}: ${response.statusText}`,
+      };
+    }
+    throw new ApiError(response.status, errorData);
+  }
+
+  return response.json() as Promise<ParseStatementResponse>;
+}
+
+/**
+ * Record user feedback & interaction on a recommendation.
+ */
+export async function recordRecommendationFeedbackApi(
+  recommendationId: string,
+  payload: RecommendationFeedbackRequest
+): Promise<RecommendationFeedbackResponse> {
+  return fetchFromApi<RecommendationFeedbackResponse>(
+    `/api/v1/recommendations/${encodeURIComponent(recommendationId)}/feedback`,
+    {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }
+  );
+}
+
