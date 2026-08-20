@@ -6,7 +6,7 @@
 
 ## Task Progress Overview
 
-- [ ] **Phase 0: Workspace Setup & Monorepo Scaffolding**
+- [x] **Phase 0: Workspace Setup & Monorepo Scaffolding**
 - [ ] **Phase 1: PDF Document Extraction & Multi-Bank Parsers**
 - [ ] **Phase 2: Financial Reconciliation & Validation Layer**
 - [ ] **Phase 3: 3-Tier Categorization & Merchant Normalization Engine**
@@ -26,14 +26,14 @@
 ## Phase 0: Workspace Setup & Monorepo Scaffolding
 
 ### Task 0.1: Initialize Monorepo Structure
-- [ ] Create frontend directory: `apps/web` (Next.js 14+ App Router, TypeScript, Tailwind CSS)
-- [ ] Create backend directory: `apps/api` (FastAPI, Python 3.11+, Pydantic v2)
-- [ ] Set up root `.gitignore` ignoring `.env`, `node_modules`, `__pycache__`, `.venv`, `.pytest_cache`
-- [ ] Configure root documentation and script shortcuts
+- [x] Create frontend directory: `apps/web` (Next.js 14+ App Router, TypeScript, Tailwind CSS)
+- [x] Create backend directory: `apps/api` (FastAPI, Python 3.11+, Pydantic v2)
+- [x] Set up root `.gitignore` ignoring `.env`, `node_modules`, `__pycache__`, `.venv`, `.pytest_cache`
+- [x] Configure root documentation and script shortcuts
 - **Definition of Done:** Both `apps/web` and `apps/api` exist with their respective configuration files.
 
 ### Task 0.2: Configure Python Backend Environment
-- [ ] Create `apps/api/requirements.txt` with:
+- [x] Create `apps/api/requirements.txt` with:
   - `fastapi>=0.110.0`, `uvicorn[standard]>=0.28.0`
   - `pdfplumber>=0.10.3`, `pymupdf>=1.23.0`
   - `pydantic>=2.6.0`, `pydantic-settings>=2.2.0`
@@ -41,17 +41,17 @@
   - `google-generativeai>=0.4.0` (or `openai>=1.14.0`)
   - `pytest>=8.0.0`, `pytest-cov>=4.1.0`, `httpx>=0.27.0`
   - `ruff>=0.3.0`, `mypy>=1.9.0`
-- [ ] Set up virtual environment `.venv` and verify clean installation
-- [ ] Create `apps/api/app/core/config.py` using `pydantic-settings`
-- [ ] Create `apps/api/app/main.py` with CORS middleware, structured exception handlers, and `/health` route
+- [x] Set up virtual environment `.venv` and verify clean installation
+- [x] Create `apps/api/app/core/config.py` using `pydantic-settings`
+- [x] Create `apps/api/app/main.py` with CORS middleware, structured exception handlers, and `/health` route
 - **Verification:** `curl http://localhost:8000/health` returns `{"status": "healthy"}`.
 
 ### Task 0.3: Configure Next.js Frontend Environment
-- [ ] Initialize `apps/web` with Next.js 14 App Router, TypeScript, Tailwind CSS
-- [ ] Install UI dependencies: `clsx`, `tailwind-merge`, `lucide-react`, `recharts`, `framer-motion`
-- [ ] Install PDF handling library: `pdfjs-dist`
-- [ ] Initialize shadcn/ui components (`button`, `card`, `dialog`, `badge`, `tabs`, `progress`, `tooltip`, `dropdown-menu`)
-- [ ] Create `apps/web/src/lib/api.ts` with Axios/Fetch HTTP client
+- [x] Initialize `apps/web` with Next.js 14 App Router, TypeScript, Tailwind CSS
+- [x] Install UI dependencies: `clsx`, `tailwind-merge`, `lucide-react`, `recharts`, `framer-motion`
+- [x] Install PDF handling library: `pdfjs-dist`
+- [x] Initialize shadcn/ui components (`button`, `card`, `dialog`, `badge`, `tabs`, `progress`, `tooltip`, `dropdown-menu`)
+- [x] Create `apps/web/src/lib/api.ts` with Axios/Fetch HTTP client
 - **Verification:** `npm run dev` in `apps/web` serves starter page at `http://localhost:3000`.
 
 ---

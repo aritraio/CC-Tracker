@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #F0F0F0;
+    --foreground: #121212;
+    --border: #121212;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Universal Selection Style */
+  ::selection {
+    background-color: #F0C020;
+    color: #121212;
+  }
+
+  /* Strict Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #E0E0E0;
+    border-left: 2px solid #121212;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #121212;
+    border: 2px solid #E0E0E0;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #D02020;
+  }
+}
+
+@layer utilities {
+  .bg-bauhaus-dots {
+    background-image: radial-gradient(#121212 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+  }
+
+  .bg-bauhaus-stripes {
+    background: repeating-linear-gradient(
+      45deg,
+      #121212,
+      #121212 4px,
+      #F0C020 4px,
+      #F0C020 16px
+    );
+  }
+
+  .bauhaus-clip-triangle {
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  }
+
+  .bauhaus-card {
+    @apply bg-white border-2 md:border-4 border-black shadow-bauhaus-md md:shadow-bauhaus-lg transition-transform duration-150 hover:-translate-y-1;
+  }
+
+  .bauhaus-btn-primary {
+    @apply bg-bauhaus-red text-white border-2 md:border-4 border-black shadow-bauhaus-sm font-bold uppercase tracking-wider px-6 py-3 transition-all duration-100 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-bauhaus-md active:translate-x-1 active:translate-y-1 active:shadow-none focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-bauhaus-yellow;
+  }
+
+  .bauhaus-btn-secondary {
+    @apply bg-bauhaus-blue text-white border-2 md:border-4 border-black shadow-bauhaus-sm font-bold uppercase tracking-wider px-6 py-3 transition-all duration-100 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-bauhaus-md active:translate-x-1 active:translate-y-1 active:shadow-none focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-bauhaus-yellow;
+  }
+
+  .bauhaus-btn-yellow {
+    @apply bg-bauhaus-yellow text-black border-2 md:border-4 border-black shadow-bauhaus-sm font-bold uppercase tracking-wider px-6 py-3 transition-all duration-100 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-bauhaus-md active:translate-x-1 active:translate-y-1 active:shadow-none focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-bauhaus-red;
+  }
+}

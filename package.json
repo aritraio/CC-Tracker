@@ -1,0 +1,23 @@
+{
+  "name": "cc-tracker-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "CC Track — Personal Spending Intelligence & Behavioral Financial Coach",
+  "scripts": {
+    "dev:web": "npm --prefix apps/web run dev",
+    "build:web": "npm --prefix apps/web run build",
+    "lint:web": "npm --prefix apps/web run lint",
+    "typecheck:web": "npm --prefix apps/web run typecheck",
+    "dev:api": "cd apps/api && source .venv/bin/activate && uvicorn app.main:app --reload --port 8000",
+    "test:api": "cd apps/api && source .venv/bin/activate && pytest tests/"
+  },
+  "keywords": [
+    "credit-card",
+    "spending-tracker",
+    "fastapi",
+    "nextjs",
+    "bauhaus"
+  ],
+  "author": "",
+  "license": "MIT"
+}
