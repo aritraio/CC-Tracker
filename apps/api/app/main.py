@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.exceptions import HTTPException, RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.v1.router import api_router
@@ -7,6 +8,8 @@ from app.core.exceptions import (
     CCTrackError,
     cc_track_exception_handler,
     global_exception_handler,
+    http_exception_handler,
+    validation_exception_handler,
 )
 from app.schemas.health import HealthResponse
 
@@ -29,6 +32,8 @@ app.add_middleware(
 
 # Exception Handlers
 app.add_exception_handler(CCTrackError, cc_track_exception_handler)  # type: ignore[arg-type]
+app.add_exception_handler(HTTPException, http_exception_handler)  # type: ignore[arg-type]
+app.add_exception_handler(RequestValidationError, validation_exception_handler)  # type: ignore[arg-type]
 app.add_exception_handler(Exception, global_exception_handler)
 
 

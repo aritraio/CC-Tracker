@@ -23,6 +23,16 @@ from app.schemas.categorization import (
     Category,
 )
 from app.schemas.health import HealthResponse
+from app.schemas.recommendations import (
+    ActionStep,
+    FindingHighlight,
+    LLMExplanationResult,
+    Recommendation,
+    RecommendationEvidence,
+    RecommendationResult,
+    RecommendationStatus,
+    RecommendationType,
+)
 from app.schemas.reconciliation import (
     ReconciliationSummary,
     ValidationIssue,
@@ -34,6 +44,12 @@ from app.schemas.statement import (
     ParsedStatement,
     StatementHeader,
     TransactionType,
+)
+from app.schemas.statements_api import (
+    ParseStatementResponse,
+    RecommendationsGenerateRequest,
+    StatementValidateRequest,
+    StatementValidateResponse,
 )
 
 __all__ = [
@@ -64,4 +80,16 @@ __all__ = [
     "Finding",
     "HistoricalProfile",
     "AnomalyDetectionResult",
+    "RecommendationType",
+    "RecommendationStatus",
+    "RecommendationEvidence",
+    "Recommendation",
+    "RecommendationResult",
+    "ActionStep",
+    "FindingHighlight",
+    "LLMExplanationResult",
+    "ParseStatementResponse",
+    "StatementValidateRequest",
+    "StatementValidateResponse",
+    "RecommendationsGenerateRequest",
 ]

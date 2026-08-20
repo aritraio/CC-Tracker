@@ -1,6 +1,7 @@
 from typing import Any
 
 from fastapi import Request, status
+from fastapi.exceptions import HTTPException, RequestValidationError
 from fastapi.responses import JSONResponse
 
 
@@ -64,12 +65,46 @@ async def cc_track_exception_handler(request: Request, exc: CCTrackError) -> JSO
     )
 
 
+async def http_exception_handler(request: Request, exc: HTTPException) -> JSONResponse:
+    detail = exc.detail
+    details: dict[str, Any] = {}
+    if isinstance(detail, dict):
+        error_code = detail.get("error_code", f"HTTP_{exc.status_code}")
+        message = detail.get("message", "An HTTP error occurred.")
+        details = detail.get("details", {})
+    else:
+        error_code = f"HTTP_{exc.status_code}"
+        message = str(detail)
+
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={
+            "error_code": error_code,
+            "message": message,
+            "details": details,
+        },
+    )
+
+
+async def validation_exception_handler(
+    request: Request, exc: RequestValidationError
+) -> JSONResponse:
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content={
+            "error_code": "REQUEST_VALIDATION_FAILED",
+            "message": "The request payload failed schema validation.",
+            "details": {"errors": exc.errors()},
+        },
+    )
+
+
 async def global_exception_handler(request: Request, exc: Exception) -> JSONResponse:
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         content={
             "error_code": "INTERNAL_SERVER_ERROR",
             "message": "An unexpected error occurred processing the request.",
-            "details": {},
+            "details": {"error_type": type(exc).__name__},
         },
     )

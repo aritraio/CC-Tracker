@@ -106,3 +106,75 @@ def test_statement_header_and_parsed_statement() -> None:
     assert parsed.reconciliation_status == "VALIDATED"
     assert len(parsed.transactions) == 1
     assert parsed.raw_text_length == 1500
+
+
+def test_recommendation_schemas() -> None:
+    from app.schemas.recommendations import (
+        ActionStep,
+        FindingHighlight,
+        LLMExplanationResult,
+        Recommendation,
+        RecommendationEvidence,
+        RecommendationResult,
+        RecommendationStatus,
+        RecommendationType,
+    )
+
+    rec = Recommendation(
+        id="rec_1",
+        finding_id="finding_1",
+        type=RecommendationType.CATEGORY_REDUCTION,
+        title="Trim Food Delivery",
+        reason="Food delivery increased 40%",
+        evidence=RecommendationEvidence(
+            current_spend=Decimal("12000.00"),
+            historical_avg=Decimal("8000.00"),
+            transaction_count=15,
+            top_merchants=["Swiggy", "Zomato"],
+        ),
+        estimated_monthly_savings=Decimal("2500.00"),
+        confidence_score=0.92,
+        action="Reduce order frequency by 2 per week",
+        priority=1,
+        status=RecommendationStatus.ACTIVE,
+    )
+
+    assert rec.id == "rec_1"
+    assert rec.type == RecommendationType.CATEGORY_REDUCTION
+    assert rec.estimated_monthly_savings == Decimal("2500.00")
+    assert rec.status == RecommendationStatus.ACTIVE
+
+    rec_result = RecommendationResult(
+        recommendations=[rec],
+        total_potential_monthly_savings=Decimal("2500.00"),
+        recommendations_count=1,
+        high_impact_count=1,
+    )
+    assert rec_result.recommendations_count == 1
+    assert rec_result.high_impact_count == 1
+
+    expl_result = LLMExplanationResult(
+        executive_summary="Summary of cycle.",
+        what_stands_out=[
+            FindingHighlight(
+                finding_title="Food delivery spike",
+                observation="Delivery was high.",
+                urgency="This Month",
+            )
+        ],
+        action_steps=[
+            ActionStep(
+                step_number=1,
+                title="Trim food orders",
+                description="Reduce 2 orders/week",
+                estimated_impact="Save ₹2,500/mo",
+            )
+        ],
+        coaching_tone_note="Keep up the good work!",
+        generated_by="deterministic_template",
+        is_fallback=False,
+    )
+    assert len(expl_result.what_stands_out) == 1
+    assert len(expl_result.action_steps) == 1
+    assert expl_result.generated_by == "deterministic_template"
+

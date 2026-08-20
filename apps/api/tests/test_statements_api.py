@@ -34,7 +34,9 @@ async def test_parse_statement_invalid_extension() -> None:
         files = {"file": ("statement.txt", b"plain text", "text/plain")}
         response = await client.post("/api/v1/statements/parse", files=files)
         assert response.status_code == 400
-        assert "Only PDF statements are supported" in response.json()["detail"]
+        data = response.json()
+        error_msg = data.get("message") or data.get("detail", "")
+        assert "Only PDF statements are supported" in error_msg
 
 
 @pytest.mark.asyncio
@@ -44,7 +46,9 @@ async def test_parse_statement_empty_file() -> None:
         files = {"file": ("statement.pdf", b"", "application/pdf")}
         response = await client.post("/api/v1/statements/parse", files=files)
         assert response.status_code == 400
-        assert "Empty file uploaded" in response.json()["detail"]
+        data = response.json()
+        error_msg = data.get("message") or data.get("detail", "")
+        assert "Empty file uploaded" in error_msg
 
 
 @pytest.mark.asyncio

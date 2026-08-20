@@ -12,8 +12,8 @@
 - [x] **Phase 3: 3-Tier Categorization & Merchant Normalization Engine**
 - [x] **Phase 4: Deterministic Analytics & Metric Engine**
 - [x] **Phase 5: Pattern & Anomaly Detectors (10 Detectors)**
-- [ ] **Phase 6: Recommendation Engine & LLM Explanation Layer**
-- [ ] **Phase 7: FastAPI REST Backend Implementation & Testing**
+- [x] **Phase 6: Recommendation Engine & LLM Explanation Layer**
+- [x] **Phase 7: FastAPI REST Backend Implementation & Testing**
 - [ ] **Phase 8: Next.js Frontend — Client Decryption & Upload Experience**
 - [ ] **Phase 9: Next.js Frontend — Insights Dashboard & Visualizations**
 - [ ] **Phase 10: Next.js Frontend — Transaction Manager & Filter Controls**
@@ -208,19 +208,19 @@
 ## Phase 6: Recommendation Engine & LLM Explanation Layer
 
 ### Task 6.1: Rule-Based Recommendation Generator
-- [ ] Create `apps/api/app/recommendations/engine.py`
-- [ ] Map detected findings to actionable recommendations:
+- [x] Create `apps/api/app/recommendations/engine.py`
+- [x] Map detected findings to actionable recommendations:
   - Food & Dining reduction $\rightarrow$ compute realistic ₹ savings by cutting 2 orders/week
   - Micro-spend consolidation $\rightarrow$ calculate monthly savings
   - Subscription audit $\rightarrow$ list unused/redundant recurring charges
-- [ ] Ensure all savings calculations are conservative and evidence-based
-- [ ] Generate structured `Recommendation` objects
+- [x] Ensure all savings calculations are conservative and evidence-based
+- [x] Generate structured `Recommendation` objects
 
 ### Task 6.2: LLM Structured Explanation Formatter
-- [ ] Create `apps/api/app/recommendations/llm_explainer.py`
-- [ ] Formulate prompt: Pass structured facts (no user PII, only summary numbers)
-- [ ] Enforce strict JSON output schema: `summary`, `what_stands_out`, `action_steps`
-- [ ] Implement JSON validation fallback: If LLM fails or hallucinates, use deterministic template
+- [x] Create `apps/api/app/recommendations/llm_explainer.py`
+- [x] Formulate prompt: Pass structured facts (no user PII, only summary numbers)
+- [x] Enforce strict JSON output schema: `summary`, `what_stands_out`, `action_steps`
+- [x] Implement JSON validation fallback: If LLM fails or hallucinates, use deterministic template
 - **Verification:** Unit tests in `apps/api/tests/test_recommendations.py` verify 100% valid JSON responses.
 
 ---
@@ -228,18 +228,18 @@
 ## Phase 7: FastAPI REST Backend Implementation & Testing
 
 ### Task 7.1: Statement Parse & Analyze Endpoint
-- [ ] Create `apps/api/app/api/v1/endpoints/statements.py`
-- [ ] Implement `POST /api/v1/statements/parse`:
+- [x] Create `apps/api/app/api/v1/endpoints/statements.py`
+- [x] Implement `POST /api/v1/statements/parse`:
   - Accepts `UploadFile` (multipart/form-data)
   - Processes file in RAM (`io.BytesIO`)
   - Detects bank, parses statement, runs reconciliation, categorizes transactions
   - Computes analytics, detects patterns, generates recommendations
   - Returns `ParseStatementResponse` JSON
-- [ ] Implement global error handler catching parser exceptions and returning RFC 7807 problem JSON
+- [x] Implement global error handler catching parser exceptions and returning RFC 7807 problem JSON
 
 ### Task 7.2: Backend Integration & Performance Testing
-- [ ] Write integration test in `apps/api/tests/test_api_integration.py` simulating full upload flow
-- [ ] Benchmark parsing speed: ensure 5-page PDF parses in $< 2.0$ seconds
+- [x] Write integration test in `apps/api/tests/test_api_integration.py` simulating full upload flow
+- [x] Benchmark parsing speed: ensure 5-page PDF parses in $< 2.0$ seconds
 - **Verification:** `pytest apps/api/tests/` passes with $\ge 85\%$ test coverage.
 
 ---
