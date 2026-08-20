@@ -11,7 +11,7 @@
 - [x] **Phase 2: Financial Reconciliation & Validation Layer**
 - [x] **Phase 3: 3-Tier Categorization & Merchant Normalization Engine**
 - [x] **Phase 4: Deterministic Analytics & Metric Engine**
-- [ ] **Phase 5: Pattern & Anomaly Detectors (10 Detectors)**
+- [x] **Phase 5: Pattern & Anomaly Detectors (10 Detectors)**
 - [ ] **Phase 6: Recommendation Engine & LLM Explanation Layer**
 - [ ] **Phase 7: FastAPI REST Backend Implementation & Testing**
 - [ ] **Phase 8: Next.js Frontend — Client Decryption & Upload Experience**
@@ -189,8 +189,8 @@
 ## Phase 5: Pattern & Anomaly Detectors (10 Detectors)
 
 ### Task 5.1: Implement Core Pattern Detectors
-- [ ] Create `apps/api/app/analytics/anomalies.py`
-- [ ] Implement 10 explicit detector functions:
+- [x] Create `apps/api/app/analytics/anomalies.py`
+- [x] Implement 10 explicit detector functions:
   1. `detect_category_spike`: Category $> 1.30 \times$ baseline
   2. `detect_spending_acceleration`: Total spend $> 1.25 \times$ previous cycle
   3. `detect_frequent_small_spend`: Micro-spending leak analysis

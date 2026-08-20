@@ -1,3 +1,16 @@
+from app.analytics.anomalies import (
+    detect_category_spike,
+    detect_frequency_inflation,
+    detect_frequent_small_spend,
+    detect_high_utilization,
+    detect_late_night_spurt,
+    detect_merchant_concentration,
+    detect_spending_acceleration,
+    detect_subscription_burden,
+    detect_unusual_purchase,
+    detect_weekend_spike,
+    run_anomaly_detection,
+)
 from app.analytics.calculator import (
     calculate_category_breakdown,
     calculate_merchant_concentration,
@@ -17,4 +30,15 @@ __all__ = [
     "detect_recurring_subscriptions",
     "AnalyticsEngine",
     "get_default_analytics_engine",
+    "detect_category_spike",
+    "detect_spending_acceleration",
+    "detect_frequent_small_spend",
+    "detect_merchant_concentration",
+    "detect_unusual_purchase",
+    "detect_subscription_burden",
+    "detect_weekend_spike",
+    "detect_late_night_spurt",
+    "detect_frequency_inflation",
+    "detect_high_utilization",
+    "run_anomaly_detection",
 ]

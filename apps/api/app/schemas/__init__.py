@@ -9,6 +9,14 @@ from app.schemas.analytics import (
     StatementAnalytics,
     TemporalMetrics,
 )
+from app.schemas.anomalies import (
+    AnomalyDetectionResult,
+    DetectorType,
+    Finding,
+    FindingEvidence,
+    FindingSeverity,
+    HistoricalProfile,
+)
 from app.schemas.categorization import (
     CategorizationStats,
     CategorizedTransaction,
@@ -50,4 +58,10 @@ __all__ = [
     "RecurringItem",
     "RecurringAnalysis",
     "StatementAnalytics",
+    "DetectorType",
+    "FindingSeverity",
+    "FindingEvidence",
+    "Finding",
+    "HistoricalProfile",
+    "AnomalyDetectionResult",
 ]
