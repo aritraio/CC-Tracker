@@ -10,7 +10,7 @@
 - [x] **Phase 1: PDF Document Extraction & Multi-Bank Parsers**
 - [x] **Phase 2: Financial Reconciliation & Validation Layer**
 - [x] **Phase 3: 3-Tier Categorization & Merchant Normalization Engine**
-- [ ] **Phase 4: Deterministic Analytics & Metric Engine**
+- [x] **Phase 4: Deterministic Analytics & Metric Engine**
 - [ ] **Phase 5: Pattern & Anomaly Detectors (10 Detectors)**
 - [ ] **Phase 6: Recommendation Engine & LLM Explanation Layer**
 - [ ] **Phase 7: FastAPI REST Backend Implementation & Testing**
@@ -165,21 +165,21 @@
 ## Phase 4: Deterministic Analytics & Metric Engine
 
 ### Task 4.1: Spend Totals & Averages Calculator
-- [ ] Create `apps/api/app/analytics/calculator.py`
-- [ ] Implement calculation of:
+- [x] Create `apps/api/app/analytics/calculator.py`
+- [x] Implement calculation of:
   - Total debits, total credits, net spend
   - Average transaction size, median transaction size, max transaction
   - Total transaction count, category spend breakdown (amounts and percentages)
   - Top 10 merchant concentration breakdown
 
 ### Task 4.2: Temporal & Behavioral Metrics
-- [ ] Implement daily spending distribution and burn-rate velocity curve
-- [ ] Implement weekday vs. weekend spend ratios and day-of-week trends
-- [ ] Implement small transaction frequency metrics (purchases $< ₹250$)
+- [x] Implement daily spending distribution and burn-rate velocity curve
+- [x] Implement weekday vs. weekend spend ratios and day-of-week trends
+- [x] Implement small transaction frequency metrics (purchases $< ₹250$)
 
 ### Task 4.3: Recurring Charges & Subscription Detector
-- [ ] Create `apps/api/app/analytics/recurring.py`
-- [ ] Detect recurring subscriptions based on:
+- [x] Create `apps/api/app/analytics/recurring.py`
+- [x] Detect recurring subscriptions based on:
   - Known subscription merchant names (Netflix, Spotify, Apple, Google)
   - Fixed recurring amount patterns at consistent intervals
 - **Verification:** Unit tests in `apps/api/tests/test_analytics.py` confirm accurate metric output.

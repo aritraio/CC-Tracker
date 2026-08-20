@@ -25,7 +25,7 @@ class Category(StrEnum):
 
 
 class CategorizedTransaction(BaseModel):
-    model_config = ConfigDict(strict=True, from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)
 
     transaction_date: date
     post_date: date | None = None
@@ -49,7 +49,7 @@ class CategorizedTransaction(BaseModel):
 
 
 class CategorizationStats(BaseModel):
-    model_config = ConfigDict(strict=True, from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)
 
     total_transactions: int = 0
     tier1_matches: int = 0

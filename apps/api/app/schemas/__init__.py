@@ -1,3 +1,14 @@
+from app.schemas.analytics import (
+    CategoryBreakdown,
+    DailySpend,
+    MerchantConcentration,
+    MicroSpendMetrics,
+    RecurringAnalysis,
+    RecurringItem,
+    SpendMetrics,
+    StatementAnalytics,
+    TemporalMetrics,
+)
 from app.schemas.categorization import (
     CategorizationStats,
     CategorizedTransaction,
@@ -30,4 +41,13 @@ __all__ = [
     "Category",
     "CategorizedTransaction",
     "CategorizationStats",
+    "SpendMetrics",
+    "CategoryBreakdown",
+    "MerchantConcentration",
+    "DailySpend",
+    "TemporalMetrics",
+    "MicroSpendMetrics",
+    "RecurringItem",
+    "RecurringAnalysis",
+    "StatementAnalytics",
 ]

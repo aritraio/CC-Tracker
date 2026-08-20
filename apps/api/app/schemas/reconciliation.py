@@ -17,7 +17,7 @@ class ValidationIssueType(StrEnum):
 
 
 class ValidationIssue(BaseModel):
-    model_config = ConfigDict(strict=True, from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)
 
     issue_type: ValidationIssueType
     severity: str = Field("WARNING", description="'WARNING' or 'ERROR'")
@@ -27,7 +27,7 @@ class ValidationIssue(BaseModel):
 
 
 class ValidationResult(BaseModel):
-    model_config = ConfigDict(strict=True, from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)
 
     is_valid: bool = Field(True, description="True if no blocking ERROR issues exist")
     issues: list[ValidationIssue] = Field(default_factory=list)
@@ -37,7 +37,7 @@ class ValidationResult(BaseModel):
 
 
 class ReconciliationSummary(BaseModel):
-    model_config = ConfigDict(strict=True, from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)
 
     status: str = Field("VALIDATED", description="'VALIDATED' or 'REVIEW_REQUIRED'")
     discrepancy: Decimal = Field(Decimal("0.00"), description="Calculated reconciliation delta")

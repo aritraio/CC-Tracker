@@ -22,7 +22,7 @@ class TransactionType(StrEnum):
 
 
 class ExtractedTransaction(BaseModel):
-    model_config = ConfigDict(strict=True, from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)
 
     transaction_date: date
     post_date: date | None = None
@@ -37,7 +37,7 @@ class ExtractedTransaction(BaseModel):
 
 
 class StatementHeader(BaseModel):
-    model_config = ConfigDict(strict=True, from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)
 
     issuer: str = Field(..., description="Issuing bank name (e.g. HDFC, ICICI, SBI)")
     card_last_4: str | None = Field(
@@ -58,7 +58,7 @@ class StatementHeader(BaseModel):
 
 
 class ParsedStatement(BaseModel):
-    model_config = ConfigDict(strict=True, from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)
 
     header: StatementHeader
     transactions: list[ExtractedTransaction]
