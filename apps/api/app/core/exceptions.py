@@ -32,7 +32,7 @@ class StatementReconciliationError(CCTrackError):
         super().__init__(
             error_code="STATEMENT_RECONCILIATION_FAILED",
             message=message,
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=getattr(status, "HTTP_422_UNPROCESSABLE_CONTENT", 422),
             details=details,
         )
 
@@ -53,9 +53,7 @@ class UnsupportedStatementError(CCTrackError):
         )
 
 
-async def cc_track_exception_handler(
-    request: Request, exc: CCTrackError
-) -> JSONResponse:
+async def cc_track_exception_handler(request: Request, exc: CCTrackError) -> JSONResponse:
     return JSONResponse(
         status_code=exc.status_code,
         content={
@@ -66,9 +64,7 @@ async def cc_track_exception_handler(
     )
 
 
-async def global_exception_handler(
-    request: Request, exc: Exception
-) -> JSONResponse:
+async def global_exception_handler(request: Request, exc: Exception) -> JSONResponse:
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         content={

@@ -7,7 +7,7 @@
 ## Task Progress Overview
 
 - [x] **Phase 0: Workspace Setup & Monorepo Scaffolding**
-- [ ] **Phase 1: PDF Document Extraction & Multi-Bank Parsers**
+- [x] **Phase 1: PDF Document Extraction & Multi-Bank Parsers**
 - [ ] **Phase 2: Financial Reconciliation & Validation Layer**
 - [ ] **Phase 3: 3-Tier Categorization & Merchant Normalization Engine**
 - [ ] **Phase 4: Deterministic Analytics & Metric Engine**
@@ -59,57 +59,57 @@
 ## Phase 1: PDF Document Extraction & Multi-Bank Parsers
 
 ### Task 1.1: Core Data Models & Base Parser Interface
-- [ ] Create `apps/api/app/schemas/statement.py` defining:
+- [x] Create `apps/api/app/schemas/statement.py` defining:
   - `TransactionType` (Enum: `PURCHASE`, `REFUND`, `REVERSAL`, `PAYMENT`, `FEE`, `INTEREST`, `GST`, `EMI`, `CASH_WITHDRAWAL`, `REWARD`, `ADJUSTMENT`, `UNKNOWN`)
   - `ExtractedTransaction` (Pydantic model with strict validation)
   - `StatementHeader` (Issuer, Period, Balances, Due Date, Limit)
   - `ParsedStatement` (Header, Transactions list, Reconciliation metadata)
-- [ ] Create `apps/api/app/parsers/base.py` defining `BaseStatementParser` ABC:
+- [x] Create `apps/api/app/parsers/base.py` defining `BaseStatementParser` ABC:
   - `identify(first_page_text: str) -> bool`
   - `parse(pdf_stream: io.BytesIO) -> ParsedStatement`
 - **Definition of Done:** Pydantic schemas compile and base class passes linting.
 
 ### Task 1.2: Bank Signature Detector
-- [ ] Create `apps/api/app/parsers/detector.py`
-- [ ] Implement signature rules and regex for:
+- [x] Create `apps/api/app/parsers/detector.py`
+- [x] Implement signature rules and regex for:
   - HDFC Bank (e.g. "HDFC Bank Credit Card", "Card No.", "Billing Cycle")
   - ICICI Bank (e.g. "ICICI Bank Credit Card Statement", "Customer ID")
   - SBI Card (e.g. "SBI Cards and Payment Services", "Statement Period")
   - Axis Bank (e.g. "Axis Bank Credit Card", "Summary of Card Account")
   - American Express (e.g. "American Express Banking Corp.", "Membership Rewards")
-- [ ] Write unit tests in `apps/api/tests/test_detector.py`
+- [x] Write unit tests in `apps/api/tests/test_detector.py`
 - **Verification:** `pytest apps/api/tests/test_detector.py` passes 100%.
 
 ### Task 1.3: HDFC Bank Parser
-- [ ] Create `apps/api/app/parsers/hdfc.py`
-- [ ] Implement table boundary detection and multi-line row stitching
-- [ ] Parse transaction dates (`DD/MM/YYYY`), merchant descriptions, amounts, and `CR`/`DR` markers
-- [ ] Extract header metadata: Total Amount Due, Minimum Amount Due, Billing Period, Credit Limit
-- [ ] Create fixture: `apps/api/tests/fixtures/hdfc_statement.txt`
-- [ ] Write unit tests in `apps/api/tests/test_hdfc_parser.py`
+- [x] Create `apps/api/app/parsers/hdfc.py`
+- [x] Implement table boundary detection and multi-line row stitching
+- [x] Parse transaction dates (`DD/MM/YYYY`), merchant descriptions, amounts, and `CR`/`DR` markers
+- [x] Extract header metadata: Total Amount Due, Minimum Amount Due, Billing Period, Credit Limit
+- [x] Create fixture: `apps/api/tests/fixtures/sample_texts.py`
+- [x] Write unit tests in `apps/api/tests/test_hdfc_parser.py`
 - **Verification:** Successfully extracts all rows from HDFC test statements without dropping lines.
 
 ### Task 1.4: ICICI Bank Parser
-- [ ] Create `apps/api/app/parsers/icici.py`
-- [ ] Handle ICICI multi-column layouts, landscape pages, and EMI schedule rows
-- [ ] Extract header metadata: Statement Date, Payment Due Date, Total Dues, Available Credit
-- [ ] Create fixture: `apps/api/tests/fixtures/icici_statement.txt`
-- [ ] Write unit tests in `apps/api/tests/test_icici_parser.py`
+- [x] Create `apps/api/app/parsers/icici.py`
+- [x] Handle ICICI multi-column layouts, landscape pages, and EMI schedule rows
+- [x] Extract header metadata: Statement Date, Payment Due Date, Total Dues, Available Credit
+- [x] Create fixture: `apps/api/tests/fixtures/sample_texts.py`
+- [x] Write unit tests in `apps/api/tests/test_icici_parser.py`
 - **Verification:** Extracts all ICICI transactions and ignores reward summaries.
 
 ### Task 1.5: SBI Card Parser
-- [ ] Create `apps/api/app/parsers/sbi.py`
-- [ ] Handle SBI Card tabular layout, filtering out reward point tables and finance charge disclosures
-- [ ] Extract header metadata: Statement Date, Total Amount Due, Min Amount Due
-- [ ] Create fixture: `apps/api/tests/fixtures/sbi_statement.txt`
-- [ ] Write unit tests in `apps/api/tests/test_sbi_parser.py`
+- [x] Create `apps/api/app/parsers/sbi.py`
+- [x] Handle SBI Card tabular layout, filtering out reward point tables and finance charge disclosures
+- [x] Extract header metadata: Statement Date, Total Amount Due, Min Amount Due
+- [x] Create fixture: `apps/api/tests/fixtures/sample_texts.py`
+- [x] Write unit tests in `apps/api/tests/test_sbi_parser.py`
 - **Verification:** Correctly parses SBI Card statements with 100% row matching.
 
 ### Task 1.6: Axis Bank & American Express Parsers
-- [ ] Create `apps/api/app/parsers/axis.py` and `apps/api/app/parsers/amex.py`
-- [ ] Extract transactions and headers for Axis and AMEX statements
-- [ ] Write unit tests in `apps/api/tests/test_additional_parsers.py`
-- **Verification:** Full bank parser suite runs cleanly via `pytest tests/test_parsers/`.
+- [x] Create `apps/api/app/parsers/axis.py` and `apps/api/app/parsers/amex.py`
+- [x] Extract transactions and headers for Axis and AMEX statements
+- [x] Write unit tests in `apps/api/tests/test_additional_parsers.py`
+- **Verification:** Full bank parser suite runs cleanly via `pytest tests/test_parsers.py`.
 
 ---
 
