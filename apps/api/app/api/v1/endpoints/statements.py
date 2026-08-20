@@ -3,6 +3,7 @@ import logging
 
 from fastapi import APIRouter, File, HTTPException, UploadFile, status
 
+from app.categorization.engine import get_default_categorization_engine
 from app.core.exceptions import CCTrackError, UnsupportedStatementError
 from app.parsers.detector import get_parser_for_statement
 from app.schemas.statement import ParsedStatement
@@ -16,7 +17,7 @@ router = APIRouter(prefix="/statements", tags=["Statements"])
     "/parse",
     response_model=ParsedStatement,
     summary="Parse an uploaded credit card PDF statement",
-    description="Statelessly parses an in-memory PDF statement, detects the bank, and returns structured line items and headers.",
+    description="Statelessly parses an in-memory PDF statement, detects the bank, and returns structured line items, headers, and 3-tier categorization.",
 )
 async def parse_statement(
     file: UploadFile = File(..., description="Decrypted credit card PDF statement file"),
@@ -38,6 +39,12 @@ async def parse_statement(
         pdf_stream = io.BytesIO(content)
         parser = get_parser_for_statement(pdf_stream)
         parsed_statement = parser.parse(pdf_stream)
+
+        # Categorize transactions via 3-tier categorization engine
+        engine = get_default_categorization_engine()
+        categorized, _ = engine.categorize_batch(parsed_statement.transactions)
+        parsed_statement.categorized_transactions = categorized
+
         return parsed_statement
 
     except (UnsupportedStatementError, CCTrackError, HTTPException):

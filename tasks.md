@@ -9,7 +9,7 @@
 - [x] **Phase 0: Workspace Setup & Monorepo Scaffolding**
 - [x] **Phase 1: PDF Document Extraction & Multi-Bank Parsers**
 - [x] **Phase 2: Financial Reconciliation & Validation Layer**
-- [ ] **Phase 3: 3-Tier Categorization & Merchant Normalization Engine**
+- [x] **Phase 3: 3-Tier Categorization & Merchant Normalization Engine**
 - [ ] **Phase 4: Deterministic Analytics & Metric Engine**
 - [ ] **Phase 5: Pattern & Anomaly Detectors (10 Detectors)**
 - [ ] **Phase 6: Recommendation Engine & LLM Explanation Layer**
@@ -137,7 +137,7 @@
 ## Phase 3: 3-Tier Categorization & Merchant Normalization Engine
 
 ### Task 3.1: Merchant Dictionary & Alias Normalizer
-- [ ] Create `apps/api/app/categorization/dictionary.json` containing 250+ top Indian merchants:
+- [x] Create `apps/api/app/categorization/dictionary.json` containing 250+ top Indian merchants:
   - Quick Commerce: Blinkit, Zepto, Instamart, DMart Ready
   - Food & Dining: Swiggy, Zomato, McDonald's, Starbucks, Domino's
   - Shopping: Amazon, Flipkart, Myntra, Ajio, Nykaa, Tata CLiQ
@@ -145,19 +145,19 @@
   - Travel: MakeMyTrip, IRCTC, IndiGo, Air India, Yatra, OYO
   - Subscriptions & OTT: Netflix, Spotify, Disney+ Hotstar, Prime, YouTube
   - Utilities & Telecom: Airtel, Jio, VI, Tata Power, BESCOM, Adani Electricity
-- [ ] Create `apps/api/app/categorization/normalizer.py` mapping raw merchant strings to standard brand names
+- [x] Create `apps/api/app/categorization/normalizer.py` mapping raw merchant strings to standard brand names
 - **Definition of Done:** 250+ merchants mapped with accurate canonical names and primary categories.
 
 ### Task 3.2: Regex & Heuristic Categorization Rules
-- [ ] Create `apps/api/app/categorization/regex_rules.py`
-- [ ] Define high-precision regex patterns for fuel, hospital/medical, grocery, rent, utilities, and education keywords
-- [ ] Implement fallback to category heuristics based on keywords in description
+- [x] Create `apps/api/app/categorization/regex_rules.py`
+- [x] Define high-precision regex patterns for fuel, hospital/medical, grocery, rent, utilities, and education keywords
+- [x] Implement fallback to category heuristics based on keywords in description
 
 ### Task 3.3: LLM Batch Categorization Fallback & In-Memory Cache
-- [ ] Create `apps/api/app/categorization/llm_fallback.py` using Google Gemini 1.5 Flash
-- [ ] Implement batch prompt format: send unknown merchant strings only (no PII, no amounts)
-- [ ] Add in-memory LRU cache / JSON cache so identical unknown merchants are only categorized once
-- [ ] Create orchestrator `apps/api/app/categorization/engine.py` coordinating Tier 1 $\rightarrow$ Tier 2 $\rightarrow$ Tier 3
+- [x] Create `apps/api/app/categorization/llm_fallback.py` using Google Gemini 1.5 Flash
+- [x] Implement batch prompt format: send unknown merchant strings only (no PII, no amounts)
+- [x] Add in-memory LRU cache / JSON cache so identical unknown merchants are only categorized once
+- [x] Create orchestrator `apps/api/app/categorization/engine.py` coordinating Tier 1 $\rightarrow$ Tier 2 $\rightarrow$ Tier 3
 - **Verification:** Unit tests in `apps/api/tests/test_categorization.py` verify 90%+ hit rate without LLM.
 
 ---

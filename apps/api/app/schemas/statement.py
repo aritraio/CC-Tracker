@@ -1,6 +1,7 @@
 from datetime import date
 from decimal import Decimal
 from enum import StrEnum
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -68,4 +69,7 @@ class ParsedStatement(BaseModel):
     )
     unparsed_lines: list[str] = Field(
         default_factory=list, description="Lines that could not be parsed"
+    )
+    categorized_transactions: list[dict[str, Any]] | list[Any] = Field(
+        default_factory=list, description="Categorized transactions with normalized merchants"
     )

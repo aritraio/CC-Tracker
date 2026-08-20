@@ -1,3 +1,8 @@
+from app.schemas.categorization import (
+    CategorizationStats,
+    CategorizedTransaction,
+    Category,
+)
 from app.schemas.health import HealthResponse
 from app.schemas.reconciliation import (
     ReconciliationSummary,
@@ -22,4 +27,7 @@ __all__ = [
     "ValidationIssue",
     "ValidationResult",
     "ReconciliationSummary",
+    "Category",
+    "CategorizedTransaction",
+    "CategorizationStats",
 ]
