@@ -19,7 +19,8 @@
 - [x] **Phase 10: Next.js Frontend — Transaction Manager & Filter Controls**
 - [x] **Phase 11: Behavioral Feedback Loop & Recommendation Tracking**
 - [x] **Phase 12: Persistence Layer (Supabase / PostgreSQL Integration)**
-- [ ] **Phase 13: End-to-End Testing, Polish, Benchmarking & Deployment**
+- [x] **Phase 13: End-to-End Testing, Polish, Benchmarking & Deployment**
+
 
 
 ---
@@ -330,20 +331,21 @@
 ## Phase 13: End-to-End Testing, Polish, Benchmarking & Deployment
 
 ### Task 13.1: Test Corpus & Regression Suite
-- [ ] Create statement test corpus covering:
+- [x] Create statement test corpus covering:
   - Multi-page statements (3-8 pages)
   - Statements with refund credits and reversals
   - Statements with EMI installment lines and GST line items
   - Scanned / malformed edge case PDFs
-- [ ] Run full automated test suite: `pytest` and Next.js test runner
+- [x] Run full automated test suite: `pytest` and Next.js test runner
 
 ### Task 13.2: Security & Privacy Audit
-- [ ] Verify zero disk writes occur during backend execution
-- [ ] Verify no raw password or 16-digit PAN is logged or stored
-- [ ] Run `npm audit` and `pip-audit` to ensure zero critical vulnerabilities
+- [x] Verify zero disk writes occur during backend execution
+- [x] Verify no raw password or 16-digit PAN is logged or stored
+- [x] Run `npm audit` and `pip-audit` to ensure zero critical vulnerabilities
 
 ### Task 13.3: Deployment Configuration
-- [ ] Create `apps/api/Dockerfile` for containerized deployment (Cloud Run / Railway)
-- [ ] Configure `apps/web` for Vercel deployment with environment variables
-- [ ] Write clear `README.md` with system overview, architecture diagram, and local setup instructions
+- [x] Create `apps/api/Dockerfile` for containerized deployment (Cloud Run / Railway)
+- [x] Configure `apps/web` for Vercel deployment with environment variables
+- [x] Write clear `README.md` with system overview, architecture diagram, and local setup instructions
 - **Final Definition of Done:** Complete project runs locally and deploys cleanly to staging with 100% test pass rate.
+
