@@ -1,4 +1,10 @@
 from app.schemas.health import HealthResponse
+from app.schemas.reconciliation import (
+    ReconciliationSummary,
+    ValidationIssue,
+    ValidationIssueType,
+    ValidationResult,
+)
 from app.schemas.statement import (
     ExtractedTransaction,
     ParsedStatement,
@@ -12,4 +18,8 @@ __all__ = [
     "ExtractedTransaction",
     "StatementHeader",
     "ParsedStatement",
+    "ValidationIssueType",
+    "ValidationIssue",
+    "ValidationResult",
+    "ReconciliationSummary",
 ]

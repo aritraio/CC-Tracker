@@ -8,7 +8,7 @@
 
 - [x] **Phase 0: Workspace Setup & Monorepo Scaffolding**
 - [x] **Phase 1: PDF Document Extraction & Multi-Bank Parsers**
-- [ ] **Phase 2: Financial Reconciliation & Validation Layer**
+- [x] **Phase 2: Financial Reconciliation & Validation Layer**
 - [ ] **Phase 3: 3-Tier Categorization & Merchant Normalization Engine**
 - [ ] **Phase 4: Deterministic Analytics & Metric Engine**
 - [ ] **Phase 5: Pattern & Anomaly Detectors (10 Detectors)**
@@ -116,21 +116,21 @@
 ## Phase 2: Financial Reconciliation & Validation Layer
 
 ### Task 2.1: Mathematical Reconciliation Engine
-- [ ] Create `apps/api/app/services/reconciliation.py`
-- [ ] Implement arithmetic checking:
+- [x] Create `apps/api/app/services/reconciliation.py`
+- [x] Implement arithmetic checking:
   - $\sum \text{Debits} - \sum \text{Credits}$ compared with Statement Net Billed Change
   - Flag status as `VALIDATED` if $|\Delta| \le ₹1.00$; else `REVIEW_REQUIRED`
-- [ ] Compute exact discrepancy amount and unparsed row candidates
-- [ ] Write unit tests verifying edge cases (refunds, reversals, roundoff)
+- [x] Compute exact discrepancy amount and unparsed row candidates
+- [x] Write unit tests verifying edge cases (refunds, reversals, roundoff)
 - **Definition of Done:** Reconciliation service correctly catches missing transactions or duplicate rows.
 
 ### Task 2.2: Transaction Sanity & Anomaly Filter
-- [ ] Create `apps/api/app/services/validator.py`
-- [ ] Check for:
+- [x] Create `apps/api/app/services/validator.py`
+- [x] Check for:
   - Impossible dates (dates outside the billing window or future dates)
   - Zero or negative amount values in purchase fields
   - Exact duplicate transactions (same date, same merchant, same amount)
-- **Verification:** Unit tests in `apps/api/tests/test_reconciliation.py` pass.
+- **Verification:** Unit tests in `apps/api/tests/test_reconciliation.py` and `apps/api/tests/test_validator.py` pass.
 
 ---
 

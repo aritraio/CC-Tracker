@@ -14,8 +14,8 @@ from app.schemas.statement import (
     ExtractedTransaction,
     ParsedStatement,
     StatementHeader,
-    TransactionType,
 )
+from app.services.reconciliation import reconcile_statement
 
 
 class SbiStatementParser(BaseStatementParser):
@@ -42,49 +42,15 @@ class SbiStatementParser(BaseStatementParser):
         header = self._extract_header(pages)
         transactions, unparsed = self._extract_transactions(pages)
 
-        # Reconciliation calculation
-        debits_sum = sum(
-            t.amount
-            for t in transactions
-            if t.transaction_type
-            not in (
-                TransactionType.PAYMENT,
-                TransactionType.REFUND,
-                TransactionType.REWARD,
-                TransactionType.REVERSAL,
-            )
-        )
-        credits_sum = sum(
-            t.amount
-            for t in transactions
-            if t.transaction_type
-            in (
-                TransactionType.PAYMENT,
-                TransactionType.REFUND,
-                TransactionType.REWARD,
-                TransactionType.REVERSAL,
-            )
-        )
-
-        reconciliation_status = "VALIDATED"
-        discrepancy = Decimal("0.00")
-
-        if header.total_debits is not None:
-            discrepancy = abs(header.total_debits - debits_sum)
-            if discrepancy > Decimal("1.00"):
-                reconciliation_status = "REVIEW_REQUIRED"
-        elif header.total_amount_due is not None:
-            expected_net = (header.opening_balance or Decimal("0.00")) + debits_sum - credits_sum
-            discrepancy = abs(header.total_amount_due - expected_net)
-            if discrepancy > Decimal("1.00"):
-                reconciliation_status = "REVIEW_REQUIRED"
+        # Mathematical reconciliation check
+        reconciliation = reconcile_statement(header, transactions, unparsed)
 
         return ParsedStatement(
             header=header,
             transactions=transactions,
             raw_text_length=raw_text_length,
-            reconciliation_status=reconciliation_status,
-            reconciliation_discrepancy=discrepancy,
+            reconciliation_status=reconciliation.status,
+            reconciliation_discrepancy=reconciliation.discrepancy,
             unparsed_lines=unparsed,
         )
 
